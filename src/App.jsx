@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { TodoProvider } from './contexts'
-import { TodoForm, TodoItem } from './components'
+import { ThemeProvider, TodoProvider } from './contexts'
+import { Header, TodoForm, TodoItem } from './components'
 function App() {
   const [todos, setTodos] = useState([])
+  const [darkMode, setDarkMode] = useState(false)
   const deleteTodo = (id)=>{
     setTodos(todos.filter((prevTodo)=>prevTodo.id !== id))
   }
@@ -15,14 +16,34 @@ function App() {
   const toggleComplete = (id)=>{
     setTodos(todos.map(prevTodo=>prevTodo.id === id?{...prevTodo,completed:!prevTodo.completed}:prevTodo))
   }
+
+  const modeChange=()=>{
+    setDarkMode(!darkMode)
+  }
+
   useEffect(()=>{
-    console.log(todos)
+    document.querySelector('html').classList.remove('dark','light')
+    document.querySelector('html').classList.add(darkMode?'dark':'light')
+  },[darkMode])
+
+  useEffect(()=>{
+    let todos = JSON.parse(localStorage.getItem('todos'))
+    if(todos && todos.length>0){
+      setTodos(todos)
+    }
+  },[])
+
+  useEffect(()=>{
+    
+    localStorage.setItem('todos',JSON.stringify(todos))
   },[todos])
   return (
+    <ThemeProvider value={{darkMode,modeChange}}>
     <TodoProvider value={{addTodo,deleteTodo,todos,toggleComplete,updateTodo}}>
+      <Header/>
       <div className='max-w-[50rem] mx-auto flex flex-col gap-10 my-10'>
 
-        <div className="p-4  shadow-md">
+        <div className="p-4 shadow-lg dark:bg-gray-800 bg-gray-300/45">
           <TodoForm />
         </div>
 
@@ -35,6 +56,7 @@ function App() {
         </div>
       </div>
     </TodoProvider>
+    </ThemeProvider>
   )
 }
 
