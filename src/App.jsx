@@ -1,15 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useEffect, useState } from 'react'
+import { TodoProvider } from './contexts'
+import { TodoForm, TodoItem } from './components'
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [todos, setTodos] = useState([])
+  const deleteTodo = (id)=>{
+    setTodos(todos.filter((prevTodo)=>prevTodo.id !== id))
+  }
+  const addTodo = (todo)=>{
+    setTodos([...todos,{id:Date.now(),todo:todo,completed:false}])
+  }
+  const updateTodo = (id,todo)=>{
+    setTodos(todos.map(prevTodo=>prevTodo.id === id ? {...prevTodo,todo:todo}:prevTodo))
+  }
+  const toggleComplete = (id)=>{
+    setTodos(todos.map(prevTodo=>prevTodo.id === id?{...prevTodo,completed:!prevTodo.completed}:prevTodo))
+  }
+  useEffect(()=>{
+    console.log(todos)
+  },[todos])
   return (
-    <>
-     <h1 className='text-center text-teal-500 font-bold text-3xl'>Tailwind CSS</h1>
-    </>
+    <TodoProvider value={{addTodo,deleteTodo,todos,toggleComplete,updateTodo}}>
+      <div className='max-w-[50rem] mx-auto flex flex-col gap-10 my-10'>
+
+        <div className="p-4  shadow-md">
+          <TodoForm />
+        </div>
+
+        <div className='flex flex-col gap-5'> 
+         {todos.map(todo=>(
+          <div key={todo.id}>
+          <TodoItem todo={todo}/>
+          </div>
+         ))}
+        </div>
+      </div>
+    </TodoProvider>
   )
 }
 
