@@ -10,7 +10,7 @@ export default function TodoItem({ todo }) {
   const { updateTodo, toggleComplete,deleteTodo } = useTodo();
   const update = (e) => {
     if (isEditable && !todo.completed) {
-      updateTodo(todo);
+      updateTodo(todo.id,newTodo);
       setIsEditable(false);
     } else {
       setIsEditable(true);
@@ -25,7 +25,7 @@ export default function TodoItem({ todo }) {
     toggleComplete(todo.id);
   };
   return (
-    <div className={`shadow-lg  py-2 gap-2 px-5 flex items-center dark:bg-gray-800 bg-gray-300/45 ${todo.completed&&'bg-green-200 dark:bg-green-500'}`}>
+    <div className={`shadow-lg  py-2 gap-2 px-5 flex items-center  ${todo.completed?'bg-green-200 dark:bg-green-500':'dark:bg-gray-800 bg-gray-100'}`}>
       <input
         type="checkbox"
         className="h-5 w-5 accent-gray-300 "
