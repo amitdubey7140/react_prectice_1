@@ -23,7 +23,7 @@ export default function TodoForm() {
           value={todo}
           type="text"
         />
-        <button className="px-5 border-l  font-semibold text-white bg-green-500">
+        <button className="px-5 border-l  font-semibold text-white bg-cyan-500">
             <FontAwesomeIcon icon={faPlus} />
         </button>
       </form>

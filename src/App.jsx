@@ -11,7 +11,8 @@ function App() {
     setTodos([...todos,{id:Date.now(),todo:todo,completed:false}])
   }
   const updateTodo = (id,todo)=>{
-    setTodos(todos.map(prevTodo=>prevTodo.id === id ? {...prevTodo,todo:todo}:prevTodo))
+    console.log(todo);
+    setTodos(prevTodos=>prevTodos.map(prevTodo=>prevTodo.id === id ? {...prevTodo,todo:todo}:prevTodo))
   }
   const toggleComplete = (id)=>{
     setTodos(todos.map(prevTodo=>prevTodo.id === id?{...prevTodo,completed:!prevTodo.completed}:prevTodo))
@@ -34,7 +35,7 @@ function App() {
   },[])
 
   useEffect(()=>{
-    
+    console.log(todos);
     localStorage.setItem('todos',JSON.stringify(todos))
   },[todos])
   return (
@@ -43,7 +44,7 @@ function App() {
       <Header/>
       <div className='max-w-[50rem] mx-auto flex flex-col gap-10 my-10'>
 
-        <div className="p-4 shadow-lg dark:bg-gray-800 bg-gray-300/45">
+        <div className="p-4 shadow-lg dark:bg-gray-800 bg-gray-100">
           <TodoForm />
         </div>
 
